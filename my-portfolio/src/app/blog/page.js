@@ -1,12 +1,19 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 
 async function getPosts() {
-  const host = headers().get("host");
-  const protocol = host?.includes("localhost") ? "http" : "https";
-  const res = await fetch(`${protocol}://${host}/api/posts`);
+  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` // On Vercel
+    : "http://localhost:3000"; // On Localhost
+
+  const res = await fetch(`${baseUrl}/api/posts`);
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch posts: ${res.statusText}`);
+  }
+
   return res.json();
 }
+
 export default async function BlogPage() {
   const posts = await getPosts();
   return (
