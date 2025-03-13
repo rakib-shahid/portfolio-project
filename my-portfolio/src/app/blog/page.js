@@ -1,16 +1,7 @@
 import Link from "next/link";
 
 async function getPosts() {
-  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` // On Vercel
-    : "http://localhost:3000"; // On Localhost
-
-  const res = await fetch(`${baseUrl}/api/posts`);
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch posts: ${res.statusText}`);
-  }
-
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`);
   return res.json();
 }
 
